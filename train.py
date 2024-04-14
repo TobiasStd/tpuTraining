@@ -137,9 +137,11 @@ if __name__ == "__main__":
     tokenizer = AutoTokenizer.from_pretrained(tokenizer_id)
 
     device = xm.xla_device()
-    xm.master_print(xr.global_runtime_device_count())
+    num_devices = xr.global_runtime_device_count()
     xm.master_print(device)
 
+    logger.warning(num_devices)
+    
     tokenizer = AutoTokenizer.from_pretrained(tokenizer_id)
     #tokenizer.pad_token = tokenizer.eos_token
     #tokenizer.padding_side = "left"
