@@ -35,6 +35,8 @@ from config import config
 xr.use_spmd()
 assert xr.is_spmd() == True
 
+logger = logging.get_logger(__name__)
+
 @torch.no_grad()
 def eval(epoch, model, eval_dataloader):
     device = xm.xla_device()
@@ -69,8 +71,8 @@ def eval(epoch, model, eval_dataloader):
     
     eval_loss = loss.item() / steps
     eval_acc = eval_acc.compute()
-    xm.master_print(f'evaluated: loss={eval_loss}, accuracy={eval_acc}\n')
-    xm.master_print(f'epoch {epoch+1} finished.')
+    logger.warning((f'evaluated: loss={eval_loss}, accuracy={eval_acc}\n')
+    logger.warning((f'epoch {epoch+1} finished.')
 
     model.train()
 
@@ -147,7 +149,7 @@ if __name__ == "__main__":
             torch_dtype=torch.bfloat16 
     )
 
-    xm.master_print("Modell wurde geladen.")
+    logger.warning(("Modell wurde geladen.")
 
     if config["use_lora"]:
         peft_config = LoraConfig(
