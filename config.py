@@ -1,7 +1,7 @@
 config = {
     "use_big_model": True,
     "model_7b" : "LeoLM/leo-hessianai-7b-chat",
-    "model_13b": "LeoLM/leo-hessianai-13b-chat",
+    "model_13b": "LeoLM/leo-hessianai-70b-chat",
     "tokenizer": "LeoLM/leo-hessianai-7b-chat",
     "num_steps": 0, # Anzahl der Samples im Trainingsdatensatz
     "batch_size": 4,
