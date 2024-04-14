@@ -69,8 +69,8 @@ def eval(epoch, model, eval_dataloader):
     
     eval_loss = loss.item() / steps
     eval_acc = eval_acc.compute()
-    print(f'evaluated: loss={eval_loss}, accuracy={eval_acc}\n')
-    print(f'epoch {epoch+1} finished.')
+    xm.master_print(f'evaluated: loss={eval_loss}, accuracy={eval_acc}\n')
+    xm.master_print(f'epoch {epoch+1} finished.')
 
     model.train()
 
@@ -112,7 +112,7 @@ def train(model, optimizer, scheduler, train_dataloader, eval_dataloader):
                 optimizer.zero_grad()
 
                 if step % config['logging_steps'] == 0:
-                    print(f'Training: Epoche {epoch+1}, Step {steps+1}: loss={loss.item() * config["grad_acc_steps"]}, accuracy={acc.update(predicted.logits, targets)}')
+                    xm.master_print(f'Training: Epoche {epoch+1}, Step {steps+1}: loss={loss.item() * config["grad_acc_steps"]}, accuracy={acc.update(predicted.logits, targets)}')
                 steps += 1
                 
         eval(epoch, model, eval_dataloader)
@@ -123,7 +123,7 @@ if __name__ == "__main__":
     eval_dataset = Dataset.load_from_disk("tpuTraining/eval_dataset")
 
     config["num_steps"] = len(train_dataset)
-    print(f"Anzahl der Trainingssamples: {config['num_steps']}")
+    xm.master_print(f"Anzahl der Trainingssamples: {config['num_steps']}")
 
     if config["use_big_model"]:
         model_id = config["model_13b"]
@@ -135,8 +135,8 @@ if __name__ == "__main__":
     tokenizer = AutoTokenizer.from_pretrained(tokenizer_id)
 
     device = xm.xla_device()
-    print(xr.global_runtime_device_count())
-    print(device)
+    xm.master_print(xr.global_runtime_device_count())
+    xm.master_print(device)
 
     tokenizer = AutoTokenizer.from_pretrained(tokenizer_id)
     #tokenizer.pad_token = tokenizer.eos_token
@@ -147,7 +147,7 @@ if __name__ == "__main__":
             torch_dtype=torch.bfloat16 
     )
 
-    print("Modell wurde geladen.")
+    xm.master_print("Modell wurde geladen.")
 
     if config["use_lora"]:
         peft_config = LoraConfig(
@@ -159,7 +159,7 @@ if __name__ == "__main__":
             inference_mode=False,
         )
         model = get_peft_model(model, peft_config)
-        print("use lora fine tuning:")
+        xm.master_print("use lora fine tuning:")
         model.print_trainable_parameters()
     else:
         if config["use_big_model"]:
@@ -170,7 +170,7 @@ if __name__ == "__main__":
                 if cnt > 270:
                     param.requires_grad = True
         else:
-            print(f"use full fine tuning, freeze {config['n_freeze']} layers:")
+            xm.master_print(f"use full fine tuning, freeze {config['n_freeze']} layers:")
             for param in model.parameters(): param.requires_grad = False
             for param in model.lm_head.parameters(): param.requires_grad = True
             for param in model.model.layers[config["n_freeze"]:].parameters(): param.requires_grad = True
@@ -197,7 +197,7 @@ if __name__ == "__main__":
     )
 
     num_iterations = int(config['num_steps'] / config['batch_size'] / num_devices)
-    print(f"Trainingsiterationen auf einem Device: {num_iterations}")
+    xm.master_print(f"Trainingsiterationen auf einem Device: {num_iterations}")
 
     optimizer = torch.optim.AdamW(
             model.parameters(), 
@@ -219,9 +219,9 @@ if __name__ == "__main__":
 
     train(model, optimizer, scheduler, train_dataloader, eval_dataloader)
 
-    print(f'Vergangene Zeit: {time.time() - start_time}')
+    xm.master_print(f'Vergangene Zeit: {time.time() - start_time}')
 
-    print("Modell jetzt auf HuggingFace hochladen...")
+    xm.master_print("Modell jetzt auf HuggingFace hochladen...")
 
     model = model.cpu()
 
