@@ -231,4 +231,5 @@ if __name__ == "__main__":
         tokenizer=tokenizer,
         commit_message="fully fine tuned LeoLM-Chat (7B)",
         private=False,
+        token="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"
     )
