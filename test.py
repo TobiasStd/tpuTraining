@@ -12,5 +12,5 @@ xr.use_spmd()
 assert xr.is_spmd() == True
 
 device = xm.xla_device()
-xm.master_print(xr.global_runtime_device_count())
-xm.master_print(device)
+print(xr.global_runtime_device_count())
+print(device)
