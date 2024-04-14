@@ -62,5 +62,5 @@ def partition_module(model, mesh, device='xla', verbose=True):
             
         if not find:
             if verbose:
-                print(f"no match {module}", name, module.weight.size(), module.weight.dim())
+                xm.master_print(f"no match {module}", name, module.weight.size(), module.weight.dim())
             xs.mark_sharding(module.weight, mesh, tuple([None] * module.weight.dim()))
