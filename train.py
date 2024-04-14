@@ -32,10 +32,12 @@ from trainUtils import print_trainable_parameters
 from distribute import partition_module
 from config import config
 
+import log
+
 xr.use_spmd()
 assert xr.is_spmd() == True
 
-logger = logging.get_logger(__name__)
+logger = log.get_logger(__name__)
 
 @torch.no_grad()
 def eval(epoch, model, eval_dataloader):

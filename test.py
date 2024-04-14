@@ -8,9 +8,13 @@ import torch_xla.runtime as xr
 from torch_xla.distributed.spmd.xla_sharded_tensor import XLAShardedTensor
 from torch_xla.distributed.spmd.xla_sharding import Mesh
 
+import log
+
+logger = log.get_logger(__name__)
+
 xr.use_spmd()
 assert xr.is_spmd() == True
 
 device = xm.xla_device()
-xm.master_print(xr.global_runtime_device_count())
-xm.master_print(device)
+logger.warning(xr.global_runtime_device_count())
+logger.warning(device)
