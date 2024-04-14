@@ -71,8 +71,8 @@ def eval(epoch, model, eval_dataloader):
     
     eval_loss = loss.item() / steps
     eval_acc = eval_acc.compute()
-    logger.warning((f'evaluated: loss={eval_loss}, accuracy={eval_acc}\n')
-    logger.warning((f'epoch {epoch+1} finished.')
+    logger.warning(f'evaluated: loss={eval_loss}, accuracy={eval_acc}\n')
+    logger.warning(f'epoch {epoch+1} finished.')
 
     model.train()
 
@@ -151,7 +151,7 @@ if __name__ == "__main__":
             torch_dtype=torch.bfloat16 
     )
 
-    logger.warning(("Modell wurde geladen.")
+    logger.warning("Modell wurde geladen.")
 
     if config["use_lora"]:
         peft_config = LoraConfig(
