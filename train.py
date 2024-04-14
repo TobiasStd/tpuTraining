@@ -69,9 +69,8 @@ def eval(epoch, model, eval_dataloader):
     
     eval_loss = loss.item() / steps
     eval_acc = eval_acc.compute()
-    print(f"Test: loss={eval_loss}")
-    xm.master_print(f'evaluated: loss={eval_loss}, accuracy={eval_acc}\n')
-    xm.master_print(f'epoch {epoch+1} finished.')
+    print(f'evaluated: loss={eval_loss}, accuracy={eval_acc}\n')
+    print(f'epoch {epoch+1} finished.')
 
     model.train()
 
@@ -120,8 +119,8 @@ def train(model, optimizer, scheduler, train_dataloader, eval_dataloader):
 
 
 if __name__ == "__main__":
-    train_dataset = Dataset.load_from_disk("train_dataset")
-    eval_dataset = Dataset.load_from_disk("eval_dataset")
+    train_dataset = Dataset.load_from_disk("tpuTraining/train_dataset")
+    eval_dataset = Dataset.load_from_disk("tpuTraining/eval_dataset")
 
     config["num_steps"] = len(train_dataset)
     print(f"Anzahl der Trainingssamples: {config['num_steps']}")
