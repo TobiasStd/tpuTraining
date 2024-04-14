@@ -17,7 +17,7 @@ config = {
     "adam_eps": 1e-7,
     "adam_weight_decay": 0.01,
     "scheduler_eta_min": 1e-7,
-    "use_lora": False,
+    "use_lora": True,
     "lora_r": 64, # LoRA Parameter aus Empfehlungen aus Paper
     "lora_alpha": 16,
     "lora_dropout": 0.05,
