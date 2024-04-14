@@ -232,9 +232,9 @@ if __name__ == "__main__":
     model = model.cpu()
 
     model.push_to_hub(
-        "Tobiiax/full-training-7b",
+        "Tobiiax/full-training-13b",
         tokenizer=tokenizer,
-        commit_message="fully fine tuned LeoLM-Chat (7B)",
+        commit_message="fully fine tuned LeoLM-Chat (13B)",
         private=False,
         token="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"
     )
