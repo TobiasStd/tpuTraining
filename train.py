@@ -123,8 +123,8 @@ def train(model, optimizer, scheduler, train_dataloader, eval_dataloader):
 
 
 if __name__ == "__main__":
-    train_dataset = Dataset.load_from_disk("tpuTraining/train_dataset")
-    eval_dataset = Dataset.load_from_disk("tpuTraining/eval_dataset")
+    train_dataset = Dataset.load_from_disk("tpuTraining/train_dataset_knowledge")
+    eval_dataset = Dataset.load_from_disk("tpuTraining/eval_dataset_knowledge")
 
     config["num_steps"] = len(train_dataset)
     xm.master_print(f"Anzahl der Trainingssamples: {config['num_steps']}")
