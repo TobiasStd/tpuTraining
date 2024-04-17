@@ -1,7 +1,7 @@
 config = {
     "use_big_model": True,
     "model_7b" : "LeoLM/leo-hessianai-7b-chat",
-    "model_13b": "LeoLM/leo-hessianai-70b-chat",
+    "model_13b": "LeoLM/leo-hessianai-13b-chat",
     "tokenizer": "LeoLM/leo-hessianai-7b-chat",
     "num_steps": 0, # Anzahl der Samples im Trainingsdatensatz
     "batch_size": 4,
@@ -17,7 +17,7 @@ config = {
     "adam_eps": 1e-7,
     "adam_weight_decay": 0.01,
     "scheduler_eta_min": 1e-7,
-    "use_lora": True,
+    "use_lora": False,
     "lora_r": 64, # LoRA Parameter aus Empfehlungen aus Paper
     "lora_alpha": 16,
     "lora_dropout": 0.05,
