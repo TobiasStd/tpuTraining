@@ -168,15 +168,8 @@ if __name__ == "__main__":
         xm.master_print("use lora fine tuning:")
         model.print_trainable_parameters()
     else:
-        if config["use_big_model"]:
-            cnt = 0
-            for param in model.parameters():
-                cnt += 1
-                param.requires_grad = False
-                if cnt > 270:
-                    param.requires_grad = True
-        else:
-            xm.master_print(f"use full fine tuning, freeze {config['n_freeze']} layers:")
+        xm.master_print(f"use full fine tuning, freeze {config['n_freeze']} layers:")
+        if config['n_freeze'] > 0:
             for param in model.parameters(): param.requires_grad = False
             for param in model.lm_head.parameters(): param.requires_grad = True
             for param in model.model.layers[config["n_freeze"]:].parameters(): param.requires_grad = True
