@@ -138,8 +138,6 @@ if __name__ == "__main__":
 
     tokenizer = AutoTokenizer.from_pretrained(tokenizer_id)
 
-    logger.warning(num_devices)
-    
     tokenizer = AutoTokenizer.from_pretrained(tokenizer_id)
     #tokenizer.pad_token = tokenizer.eos_token
     #tokenizer.padding_side = "left"
@@ -154,6 +152,7 @@ if __name__ == "__main__":
     device = xm.xla_device()
     num_devices = xr.global_runtime_device_count()
     xm.master_print(device)
+    xm.master_print(num_devices)
     
     if config["use_lora"]:
         peft_config = LoraConfig(
@@ -175,7 +174,6 @@ if __name__ == "__main__":
             for param in model.model.layers[config["n_freeze"]:].parameters(): param.requires_grad = True
         print_trainable_parameters(model)
 
-    num_devices = xr.global_runtime_device_count()
     mesh_shape = (1, num_devices, 1)
     device_ids = np.array(range(num_devices))
     mesh = Mesh(device_ids, mesh_shape, ('dp', 'fsdp', 'mp'))
