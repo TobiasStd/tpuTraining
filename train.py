@@ -138,10 +138,6 @@ if __name__ == "__main__":
 
     tokenizer = AutoTokenizer.from_pretrained(tokenizer_id)
 
-    device = xm.xla_device()
-    num_devices = xr.global_runtime_device_count()
-    xm.master_print(device)
-
     logger.warning(num_devices)
     
     tokenizer = AutoTokenizer.from_pretrained(tokenizer_id)
@@ -155,6 +151,10 @@ if __name__ == "__main__":
 
     logger.warning("Modell wurde geladen.")
 
+    device = xm.xla_device()
+    num_devices = xr.global_runtime_device_count()
+    xm.master_print(device)
+    
     if config["use_lora"]:
         peft_config = LoraConfig(
             r=config["lora_r"],
