@@ -123,8 +123,8 @@ def train(model, optimizer, scheduler, train_dataloader, eval_dataloader):
 
 
 if __name__ == "__main__":
-    train_dataset = Dataset.load_from_disk("tpuTraining/train_dataset_left")
-    eval_dataset = Dataset.load_from_disk("tpuTraining/eval_dataset_left")
+    train_dataset = Dataset.load_from_disk("tpuTraining/train_dataset_knowledge")
+    eval_dataset = Dataset.load_from_disk("tpuTraining/eval_dataset_knowledge")
 
     config["num_steps"] = len(train_dataset)
     xm.master_print(f"Anzahl der Trainingssamples: {config['num_steps']}")
@@ -223,9 +223,9 @@ if __name__ == "__main__":
     model = model.cpu()
 
     model.push_to_hub(
-        "Tobistd/small-training-13b",
+        "Tobistd/hypothesen-13b",
         tokenizer=tokenizer,
-        commit_message="fully fine tuned (small dataset) LeoLM-Chat (13B)",
+        commit_message="fully fine tuned LeoLM-Chat (13B)",
         private=False,
         token="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"
     )
