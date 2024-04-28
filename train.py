@@ -123,8 +123,8 @@ def train(model, optimizer, scheduler, train_dataloader, eval_dataloader):
 
 
 if __name__ == "__main__":
-    train_dataset = Dataset.load_from_disk("tpuTraining/train_dataset_knowledge")
-    eval_dataset = Dataset.load_from_disk("tpuTraining/eval_dataset_knowledge")
+    train_dataset = Dataset.load_from_disk("tpuTraining/train_dataset_left")
+    eval_dataset = Dataset.load_from_disk("tpuTraining/eval_dataset_left")
 
     config["num_steps"] = len(train_dataset)
     xm.master_print(f"Anzahl der Trainingssamples: {config['num_steps']}")
@@ -140,7 +140,7 @@ if __name__ == "__main__":
 
     tokenizer = AutoTokenizer.from_pretrained(tokenizer_id)
     #tokenizer.pad_token = tokenizer.eos_token
-    #tokenizer.padding_side = "left"
+    tokenizer.padding_side = "left"
 
     model = AutoModelForCausalLM.from_pretrained(
             model_id,
@@ -223,9 +223,9 @@ if __name__ == "__main__":
     model = model.cpu()
 
     model.push_to_hub(
-        "Tobiiax/full-training-13b",
+        "Tobiiax/small-training-13b",
         tokenizer=tokenizer,
-        commit_message="fully fine tuned LeoLM-Chat (13B)",
+        commit_message="fully fine tuned (small dataset) LeoLM-Chat (13B)",
         private=False,
         token="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"
     )
