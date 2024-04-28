@@ -223,7 +223,7 @@ if __name__ == "__main__":
     model = model.cpu()
 
     model.push_to_hub(
-        "Tobiiax/small-training-13b",
+        "Tobistd/small-training-13b",
         tokenizer=tokenizer,
         commit_message="fully fine tuned (small dataset) LeoLM-Chat (13B)",
         private=False,
